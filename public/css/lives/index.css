@@ -1,0 +1,81 @@
+label{
+    font-weight: normal;
+    margin:0;
+}
+
+.select-button{
+    display: inline-block;
+}
+#select-building-btn{
+    margin-right: 20px;
+}
+
+.search{
+    display: inline-block;
+    width:190px;
+    margin-right: 20px;
+}
+.date-search{
+    display: inline-block;
+}
+.room{
+    padding: 5px;
+}
+.room-title{
+    padding-left: 0;
+    padding-right: 0;
+    font-size: 18px;
+    line-height: 18px;
+    font-weight: bold;
+}
+.room-remark input{
+    display: none;
+}
+.person-card{
+    background-color: rgb(93, 173, 226);
+    min-height: 219px;
+    position: relative;
+}
+.panel-body .person-card-container:nth-child(2n+1),
+.room:nth-child(2n+1){
+    clear: both;
+}
+.person-name{
+    font-size: 16px;
+    line-height: 24px;
+    padding: 3px 8px;
+    font-weight: bold;
+}
+.person-detail{
+    font-size: 12px;
+    padding: 3px 8px;
+    border-top: 1px solid #7ec4e6;
+    overflow: hidden;
+    clear: both;
+}
+.person-detail p{
+    margin: 3px 0;
+    line-height: 14px;
+    padding:0;
+}
+.person-detail p.remark{
+    min-height: 36px;
+}
+.person-actions{
+    position: absolute;
+    padding: 5px;
+    bottom: 0;
+    left: 0;
+}
+.person-add{
+    display: block;
+    line-height: 219px;
+    text-align: center;
+    font-size: 56px;
+}
+.person-add i{
+    color:gray;
+}
+.person-add {
+    color: #000000;
+}
