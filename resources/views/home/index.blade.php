@@ -26,9 +26,9 @@
         <div class="row">
             @include('home.partials.types-info')
         </div>
-        <div class="row">
+        <!-- <div class="row">
             @include('home.partials.building-detail')
-        </div>
+        </div> -->
     </section>
     @stack('home.scripts')
 @endsection

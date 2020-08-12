@@ -9,7 +9,7 @@
             @endif
         </h3>
     </div>
-    <div class="box-body" style="height:151px;">
+    <div class="box-body" style="height:225px;">
         <ul class="repairing-list">
             @foreach($repairing as $repair)
             <li>

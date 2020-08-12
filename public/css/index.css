@@ -80,6 +80,11 @@
 }
 .main-info-box{
     background-color: white;
-    height: 60px;
-    margin-bottom: 8px;
+    margin-bottom: 25px;
+}
+.info-box-text{
+    line-height: 32px;
+}
+.info-box-number{
+    line-height: 32px;
 }

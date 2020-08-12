@@ -6,8 +6,8 @@
         </h3>
 
     </div>
-    <div class="box-body" style="height:151px;">
-        <div id="verticalBarChart" style="width: 100%;height: 130px;"></div>
+    <div class="box-body" style="height:226px;">
+        <div id="verticalBarChart" style="width: 100%;"></div>
        {{-- <ul class="repairing-list">
             @foreach ($currentDayBillsStatistics as $type => $costs)
                 <li>
