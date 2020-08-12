@@ -66,7 +66,7 @@ class LiveService
             $record = new Record;
             $record->room_id = $room->id;
             $record->person_id = $person->id;
-            $record->type_id = $room->type->id;
+            $record->type_id = $inputs['type_id'];
             $record->record_at = now();
             $record->status = Record::STATUS_NULL;
             if ($room->type->has_contract) {
@@ -88,6 +88,7 @@ class LiveService
         DB::transaction(function () use ($recordId, $inputs) {
             $record = Record::findOrFail($recordId);
             $record->record_at = $inputs['record_at'];
+            $record->type_id = $inputs['type_id'];
             if ($record->type->has_contract) {
                 $record->start_at = $inputs['start_at'];
                 $record->end_at = $inputs['end_at'];

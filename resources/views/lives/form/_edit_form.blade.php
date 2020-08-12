@@ -5,6 +5,28 @@
     <div class="box-body">
         <div class="fields-group">
             <div class="form-group {!! !$errors->has('person.name') ? '' : 'has-error' !!}  ">
+                <label class="col-sm-2  control-label">所属类型</label>
+                <div class="col-sm-8">
+                    @if($errors->has('type_id'))
+                        @foreach($errors->get('type_id') as $message)
+                            <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label><br/>
+                        @endforeach
+                    @endif
+                    <div class="input-group">
+                        <select
+                            name="type_id"
+                            style="width:300px;"
+                            class="form-control" 
+                            value="{{old('type_id')}}"
+                        >
+                            @foreach($types as $id=>$title)
+                                <option value="{{$id}}" @if($record->type_id === $id) selected="selected" @endif>{{$title}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group {!! !$errors->has('person.name') ? '' : 'has-error' !!}  ">
                 <label class="col-sm-2  control-label">姓名</label>
                 <div class="col-sm-8">
                     @if($errors->has('person.name'))

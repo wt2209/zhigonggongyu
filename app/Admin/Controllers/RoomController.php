@@ -44,12 +44,13 @@ class RoomController extends Controller
          * 因此在此手动创建验证
          * 并将错误信息加到“类型”上
          */
-        $validator = Validator::make($request->all(), [
-            'type_id' => new RoomEmpty($id),
-        ]);
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
+        // 修改房间时不再检测是否是空房间 wt - 2020-8-12
+        // $validator = Validator::make($request->all(), [
+        //     'type_id' => new RoomEmpty($id),
+        // ]);
+        // if ($validator->fails()) {
+        //     return back()->withErrors($validator)->withInput();
+        // }
         return $this->form()->update($id);
     }
 

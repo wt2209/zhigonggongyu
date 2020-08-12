@@ -102,25 +102,30 @@
                                             @foreach($room->records as $record)
                                                 <div class="@if($room->person_number > 1 || count($room->records) > 1) col-md-6 @endif person-card-container" style="padding: 3px;">
                                                     <div class="person-card">
-                                                        <div class="person-name">
-                                                            {{$record->person->name}}
-                                                            <span style="font-size:12px">
-                                                                (
-                                                                {{$record->person->gender}}
-                                                                @if($record->person->education !== \App\Models\Person::EDUCATION_UNKNOWN)
-                                                                    ，{{\App\Models\Person::$educationMap[$record->person->education]}}
-                                                                @endif
-                                                                )
-                                                            </span>
+                                                        <div class="person-title">
+                                                            <div class="person-name">
+                                                                {{$record->person->name}}
+                                                                <span style="font-size:12px">
+                                                                    (
+                                                                    {{$record->person->gender}}
+                                                                    @if($record->person->education !== \App\Models\Person::EDUCATION_UNKNOWN)
+                                                                        ，{{\App\Models\Person::$educationMap[$record->person->education]}}
+                                                                    @endif
+                                                                    )
+                                                                </span>
+                                                            </div>
+                                                            <div class="person-type">
+                                                                {{$record->type->title}}
+                                                            </div>
                                                         </div>
                                                         <div class="person-detail">
-                                                            <div class="col-md-7" style="padding: 0;">
+                                                            <div class="col-md-6" style="padding: 0;">
                                                                 <p>{{$record->person->department}}</p>
                                                                 <p>{{$record->person->phone_number}}</p>
                                                             </div>
-                                                            <div class="col-md-5" style="padding: 0;">
-                                                                <p>入住时间: </p>
-                                                                <p>{{$record->person->entered_at}}</p>
+                                                            <div class="col-md-6" style="padding: 0;">
+                                                                <p>进公寓:{{$record->person->entered_at}}</p>
+                                                                <p>本房间:{{$record->record_at}}</p>
                                                             </div>
                                                         </div>
                                                         @showContractDetail($record)

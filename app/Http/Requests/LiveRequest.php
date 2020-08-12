@@ -28,6 +28,7 @@ class LiveRequest extends FormRequest
     {
         return [
             'room_id' => 'sometimes|required',
+            'type_id' => 'required|integer',
             'person.name' => 'required',
             'person.gender' => Rule::in(['男', '女']),
             'person.entered_at' => 'nullable|date',
@@ -43,6 +44,8 @@ class LiveRequest extends FormRequest
     {
         return [
             'room_id.required' => '非法错误',
+            'type_id.required' => '类型必须选择',
+            'type_id.integer' => '类型格式错误',
             'person.name.required' => '必须填写',
             'person.gender.in' => '非法错误',
             'person.entered_at.date' => '请填写一个日期格式，如：2018-9-4',

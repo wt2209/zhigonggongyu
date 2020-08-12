@@ -40,11 +40,21 @@ label{
 .room:nth-child(2n+1){
     clear: both;
 }
-.person-name{
-    font-size: 16px;
+.person-title{
+    display: flex;
+    justify-content: space-around;
     line-height: 24px;
     padding: 3px 8px;
     font-weight: bold;
+}
+.person-name{
+    flex: 3;
+    font-size: 16px;
+}
+.person-type{
+    flex: 2;
+    text-align: right;
+    font-size: 14px;
 }
 .person-detail{
     font-size: 12px;
