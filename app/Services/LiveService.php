@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\Person;
@@ -20,7 +21,6 @@ class LiveService
      */
     public function getRooms(Request $request)
     {
-        $typeTitle = $request->input('type_title');
         $building = $request->input('building');
         $unit = $request->input('unit');
 
@@ -33,8 +33,8 @@ class LiveService
         $end = $request->input('end');
         $dateTypeId = $request->input('date_type_id');
 
-        if ($typeTitle && $building && $unit) {
-            $rooms = $this->getRoomsByUnit($typeTitle, $building, $unit);
+        if ($building && $unit) {
+            $rooms = $this->getRoomsByUnit($building, $unit);
         } else if ($keyword) {
             $rooms = $this->getRoomsByKeyword($keyword);
         } else if ($dateTypeId && $status && $start && $end) {
@@ -50,7 +50,7 @@ class LiveService
      * @param array $inputs
      * @throws \Throwable
      */
-    public function store(Array $inputs)
+    public function store(array $inputs)
     {
         DB::transaction(function () use ($inputs) {
             $room = Room::findOrFail($inputs['room_id']);
@@ -85,7 +85,7 @@ class LiveService
      */
     public function update($recordId, $inputs)
     {
-        DB::transaction(function () use ($recordId, $inputs){
+        DB::transaction(function () use ($recordId, $inputs) {
             $record = Record::findOrFail($recordId);
             $record->record_at = $inputs['record_at'];
             if ($record->type->has_contract) {
@@ -107,7 +107,7 @@ class LiveService
      */
     public function move($recordId, $moveToRoom)
     {
-        DB::transaction(function () use ($recordId, $moveToRoom){
+        DB::transaction(function () use ($recordId, $moveToRoom) {
             $now = now();
             $toRoomId = Room::where('title', $moveToRoom)->value('id');
 
@@ -138,14 +138,14 @@ class LiveService
      */
     public function renew($recordId, $request)
     {
-        DB::transaction(function () use ($recordId, $request){
+        DB::transaction(function () use ($recordId, $request) {
             $newEndAt = $request->input('new_end_at');
             $newContractEnd = $request->input('new_contract_end');
 
             $record = Record::findOrFail($recordId);
 
             Renewal::create([
-                'record_id' =>$recordId,
+                'record_id' => $recordId,
                 'end_at' => $record->end_at,
                 'new_end_at' => $newEndAt,
             ]);
@@ -170,7 +170,7 @@ class LiveService
         $record = Record::find($recordId);
         $record->status = Record::STATUS_QUIT;
         $record->deleted_at = now();
-        return (boolean) $record->save();
+        return (bool) $record->save();
     }
 
     /**
@@ -193,40 +193,45 @@ class LiveService
      */
     private function createRoomStructure()
     {
-        $types = Type::with('rooms')->get()->toArray();
+        $rooms = Room::select(['building', 'unit'])
+            ->groupBy('building', 'unit')
+            ->get()
+            ->toArray();
+
         $data = [];
-        foreach ($types as $type) {
-            $tmp = [];
-            foreach ($type['rooms'] as $room) {
-                $building = $room['building'];
-                $unit = $room['unit'];
-                if (!isset($tmp[$building][$unit])) {
-                    $tmp[$building][$unit] = [
-                        'type_title' => $type['title'],
-                        'building' => $building,
-                        'unit' => $unit,
-                    ];
-                }
+        foreach ($rooms as $room) {
+            $building = $room['building'];
+            $unit = $room['unit'];
+            if (isset($data[$building])) {
+                array_push($data[$building], $unit);
+            } else {
+                $data[$building] = [$unit];
             }
-            $data[$type['title']] = $tmp;
         }
+        // 各楼的单元排序
+        foreach ($data as $building => $units) {
+            sort($data[$building], SORT_NUMERIC);
+        }
+        // 楼号排序
+        uksort($data, function ($a, $b) {
+            $a = str_replace(['红', '高'], [2, 3], $a);
+            $b = str_replace(['红', '高'], [2, 3], $b);
+            return intval($a) > intval($b);
+        });
         return $data;
     }
 
     /**
-     * 根据类型、楼号、单元号获取房间
+     * 根据楼号、单元号获取房间
      *
-     * @param $typeTitle
      * @param $building
      * @param $unit
      * @return Room[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
-    private function getRoomsByUnit($typeTitle, $building, $unit)
+    private function getRoomsByUnit($building, $unit)
     {
-        $typeId = Type::where('title', $typeTitle)->value('id');
         // 会自动过滤已经被softDelete的records
         return Room::with(['type', 'records', 'records.person', 'records.type'])
-            ->where('type_id', $typeId)
             ->where('building', $building)
             ->where('unit', $unit)
             ->get();
@@ -248,7 +253,7 @@ class LiveService
         // 处理电话和姓名
         $field = is_numeric($keyword) ? 'phone_number' : 'name';
         return Room::with(['type', 'records', 'records.person', 'records.type'])
-            ->whereHas('records.person', function ($query) use ($field, $keyword){
+            ->whereHas('records.person', function ($query) use ($field, $keyword) {
                 $query->where($field, 'like', "%{$keyword}%");
             })
             ->get();
@@ -270,7 +275,7 @@ class LiveService
 
         return Room::with(['type', 'records', 'records.person', 'records.type'])
             ->where('type_id', $dateTypeId)
-            ->whereHas('records', function ($query) use ($field, $between){
+            ->whereHas('records', function ($query) use ($field, $between) {
                 $query->whereBetween($field, $between);
             })
             ->get();

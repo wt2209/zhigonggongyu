@@ -81,7 +81,7 @@ return [
     'locale' => 'zh-CN',
 
     // faker locale
-    'faker_locale'=>'zh-CN',
+    'faker_locale'=>'zh_CN',
 
     /*
     |--------------------------------------------------------------------------

@@ -8,8 +8,7 @@
                         <div class="col-md-12" style="padding:0 5px;">
                             <div class="select-button">
                                 <button class="btn btn-default" type="button" data-toggle="dropdown" aria-expanded="false" id="select-building-btn">
-                                    @if (request('type_title'))
-                                        {{request('type_title')}} /
+                                    @if (request('building'))
                                         {{request('building')}} /
                                         {{request('unit')}}
                                     @else
@@ -18,20 +17,13 @@
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu" role="menu">
-                                    @foreach($structure as $typeTitle => $buildings)
+                                    @foreach($structure as $building => $units)
                                         <li class="dropdown-submenu">
-                                            <a tabindex="0" data-toggle="dropdown" class="type-name">{{ $typeTitle }}</a>
+                                            <a tabindex="0" data-toggle="dropdown" class="building">{{ $building }}</a>
                                             <ul class="dropdown-menu">
-                                                @foreach($buildings as $building => $units)
-                                                    <li class="dropdown-submenu">
-                                                        <a tabindex="0" data-toggle="dropdown" class="buildings">{{ $building }}</a>
-                                                        <ul class="dropdown-menu">
-                                                            @foreach($units as $unit => $options)
-                                                                <li>
-                                                                    <a href="{{route('lives.index', $options)}}">{{ $unit }}</a>
-                                                                </li>
-                                                            @endforeach
-                                                        </ul>
+                                                @foreach($units as $unit)
+                                                    <li>
+                                                        <a href="{{route('lives.index', ['building'=>$building, 'unit'=>$unit])}}">{{ $unit }}</a>
                                                     </li>
                                                 @endforeach
                                             </ul>
@@ -247,8 +239,8 @@
             // 我也不知道怎么实现的。。
             $('#select-building-btn').click(function (e) {
                 $(this).parent().addClass('open');
-                $('.type-name').each(function () {
-                    if ($(this).html() === '{{ request('type_title') }}') {
+                $('.building').each(function () {
+                    if ($(this).html() === '{{ request('building') }}') {
                         $(this).siblings('.dropdown-menu').find('.buildings').each(function () {
                             if ($(this).html() === '{{ request('building') }}') {
                                 $(this).trigger('click');
