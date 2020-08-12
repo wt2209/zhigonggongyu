@@ -44,7 +44,7 @@ label{
     display: flex;
     justify-content: space-around;
     line-height: 24px;
-    padding: 3px 8px;
+    padding: 3px 5px;
     font-weight: bold;
 }
 .person-name{
@@ -58,7 +58,7 @@ label{
 }
 .person-detail{
     font-size: 12px;
-    padding: 3px 8px;
+    padding: 3px 5px;
     border-top: 1px solid #7ec4e6;
     overflow: hidden;
     clear: both;
