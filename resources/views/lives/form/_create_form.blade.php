@@ -57,6 +57,21 @@
                     </div>
                 </div>
             </div>
+            <div class="form-group {!! !$errors->has('person.serial') ? '' : 'has-error' !!}  ">
+                <label class="col-sm-2  control-label">工号</label>
+                <div class="col-sm-8">
+                    @if($errors->has('person.serial'))
+                        @foreach($errors->get('person.serial') as $message)
+                            <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label><br/>
+                        @endforeach
+                    @endif
+                    <div class="input-group">
+                        <input type="text" id="person_serial"
+                               value="{{old('person.serial')}}"
+                               name="person[serial]"  class="form-control" placeholder="输入 工号">
+                    </div>
+                </div>
+            </div>
             <div class="form-group {!! !$errors->has('person.gender') ? '' : 'has-error' !!}  ">
                 <label class="col-sm-2  control-label">性别</label>
                 <div class="col-sm-8">

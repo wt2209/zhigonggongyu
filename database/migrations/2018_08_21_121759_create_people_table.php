@@ -18,6 +18,7 @@ class CreatePeopleTable extends Migration
             $table->increments('id');
             $table->string('name')->default('')->index();
             $table->string('short_name')->nullable()->index();
+            $table->string('serial')->nullable()->index()->comment('工号');
             $table->string('identify')->nullable()->unique();
             $table->enum('gender', ['男', '女'])->default('男');
             $table->string('department')->nullable();

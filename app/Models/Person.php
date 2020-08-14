@@ -29,7 +29,7 @@ class Person extends Model
         self::EDUCATION_UNKNOWN => '未知',
     ];
 
-    protected $fillable = ['name', 'short_name', 'identify', 'gender',
+    protected $fillable = ['name', 'short_name', 'identify', 'serial', 'gender',
         'department', 'entered_at', 'contract_start', 'contract_end',
         'education', 'phone_number', 'remark', 'spouse_name'];
 

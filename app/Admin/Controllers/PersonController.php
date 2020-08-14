@@ -48,6 +48,7 @@ class PersonController extends Controller
 
             $grid->name('姓名');
             $grid->gender('性别');
+            $grid->serial('工号');
             $grid->identify('身份证号');
             $grid->department('部门');
             $grid->education('学历')->display(function ($value) {
@@ -81,9 +82,10 @@ class PersonController extends Controller
 
             $grid->filter(function($filter){
                 $filter->like('name', '姓名');
+                $filter->like('identify', '身份证号');
+                $filter->like('serial', '工号');
                 $filter->in('education', '学历')->multipleSelect(Person::$educationMap);
                 $filter->like('phone_number', '电话');
-                $filter->like('identify', '身份证号');
                 $filter->like('department', '部门');
                 $filter->disableIdFilter();
             });

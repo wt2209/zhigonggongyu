@@ -12,11 +12,6 @@
             </div>
         </div>
         <div class="person-detail">
-            <div class="col-md-12" style="padding: 0;">
-                <p>工号: 11000469</p>
-            </div>
-        </div>
-        <div class="person-detail">
             <div class="col-md-6" style="padding: 0;">
                 <p>{{$record->person->department}}</p>
                 <p>{{$record->person->phone_number}}</p>
@@ -26,6 +21,13 @@
                 <p>{{$record->record_at?'本房间:'.$record->record_at:'&nbsp;'}}</p>
             </div>
         </div>
+        @if($record->person->serial)
+            <div class="person-detail">
+                <div class="col-md-12" style="padding: 0;">
+                    <p>工号: {{$record->person->serial}}</p>
+                </div>
+            </div>
+        @endif
         @showContractDetail($record)
         <div class="person-detail">
             <p>
