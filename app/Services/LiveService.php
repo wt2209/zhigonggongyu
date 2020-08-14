@@ -90,8 +90,8 @@ class LiveService
             $record->record_at = $inputs['record_at'];
             $record->type_id = $inputs['type_id'];
             if ($record->type->has_contract) {
-                $record->start_at = $inputs['start_at'];
-                $record->end_at = $inputs['end_at'];
+                $record->start_at = $inputs['start_at'] ?? null;
+                $record->end_at = $inputs['end_at'] ?? null;
             }
             $record->save();
 
