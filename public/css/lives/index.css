@@ -33,7 +33,8 @@ label{
 }
 .person-card{
     background-color: rgb(93, 173, 226);
-    min-height: 219px;
+    min-height: 255px;
+    padding-bottom: 26px;
     position: relative;
 }
 .panel-body .person-card-container:nth-child(2n+1),

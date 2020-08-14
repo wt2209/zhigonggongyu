@@ -40,7 +40,7 @@ class AppServiceProvider extends ServiceProvider
     private function tags()
     {
         Blade::if('hasRentContract', function (Record $record) {
-            return $record->type->has_contract;
+            return $record->type->has_contract && $record->start_at;
         });
 
         Blade::if('hasContract', function (Record $record) {
