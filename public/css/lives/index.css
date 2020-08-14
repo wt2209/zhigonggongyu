@@ -80,7 +80,8 @@ label{
 }
 .person-add{
     display: block;
-    line-height: 219px;
+    padding-top: 26px;
+    line-height: 193px;
     text-align: center;
     font-size: 56px;
 }
