@@ -12,13 +12,13 @@
             </div>
         </div>
         <div class="person-detail">
-            <div class="col-md-6" style="padding: 0;">
+            <div class="col-md-5" style="padding: 0;">
                 <p>{{$record->person->department}}</p>
                 <p>{{$record->person->phone_number}}</p>
             </div>
-            <div class="col-md-6" style="padding: 0;text-align:right;">
-                <p>{{$record->person->entered_at?'进公寓:'.$record->person->entered_at:'&nbsp;'}}</p>
-                <p>{{$record->record_at?'本房间:'.$record->record_at:'&nbsp;'}}</p>
+            <div class="col-md-7" style="padding: 0;text-align:right;">
+                <p>{{$record->person->entered_at ? '进公寓:' . $record->person->entered_at : '&nbsp;'}}</p>
+                <p>{{$record->record_at ? '本房间:' . $record->record_at : '&nbsp;'}}</p>
             </div>
         </div>
         @if($record->person->serial)
