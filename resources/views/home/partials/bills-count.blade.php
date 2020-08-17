@@ -8,13 +8,13 @@
     </div>
     <div class="box-body" style="height:226px;">
         <div id="verticalBarChart" style="width: 100%;"></div>
-       {{-- <ul class="repairing-list">
+       <ul class="repairing-list">
             @foreach ($currentDayBillsStatistics as $type => $costs)
                 <li>
                     {{ $type }} ： ￥ {{ $costs }}
                 </li>
             @endforeach
-        </ul>--}}
+        </ul>
     </div>
 </div>
 

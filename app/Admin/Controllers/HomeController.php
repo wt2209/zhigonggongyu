@@ -78,7 +78,7 @@ class HomeController extends Controller
         // 类型
         $types = Type::withCount([
             'rooms',
-            'people',
+            'records as people_count',
             'rooms as rooms_used_count' => function ($query) {
                 $query->has('records');
             }
