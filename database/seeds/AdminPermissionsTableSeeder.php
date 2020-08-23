@@ -641,6 +641,26 @@ class AdminPermissionsTableSeeder extends Seeder
             60 =>
             array (
                 'id' => 112,
+                'name' => '费用类型禁用',
+                'slug' => 'bill_types.disable',
+                'http_method' => 'PATCH',
+                'http_path' => '/bill_types/disable',
+                'created_at' => '2018-10-10 13:50:36',
+                'updated_at' => '2018-10-10 16:24:09',
+            ),
+            61 =>
+            array (
+                'id' => 113,
+                'name' => '费用类型启用',
+                'slug' => 'bill_types.enable',
+                'http_method' => 'PATCH',
+                'http_path' => '/bill_types/enable',
+                'created_at' => '2018-10-10 13:50:36',
+                'updated_at' => '2018-10-10 16:24:09',
+            ),
+            62 =>
+            array (
+                'id' => 114,
                 'name' => '备份',
                 'slug' => 'backup.index',
                 'http_method' => 'GET,POST,DELETE',
