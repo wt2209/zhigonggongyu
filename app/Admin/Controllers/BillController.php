@@ -36,7 +36,7 @@ class BillController extends Controller
     }
     public function create()
     {
-        $billTypes = BillType::pluck('title');
+        $billTypes = BillType::where('is_using', true)->pluck('title');
         $view = view('bills.create', compact('billTypes'));
         return Admin::content(function (Content $content) use ($view) {
             $content->header('费用');
@@ -253,7 +253,7 @@ class BillController extends Controller
     protected function editForm($id)
     {
         return Admin::form(Bill::class, function (Form $form) use ($id) {
-            $types = BillType::orderBy('title')->pluck('title', 'id');
+            $types = BillType::where('is_using', true)->orderBy('title')->pluck('title', 'id');
             $payed = Bill::where('id', $id)->payed()->exists();
 
             $form->select('is_refund', '缴费/退费')->options(['0'=>'缴费', '1'=>'退费']);

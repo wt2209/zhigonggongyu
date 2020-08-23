@@ -19,6 +19,7 @@ class CreateTypesTable extends Migration
             $table->tinyInteger('fee_type')->default(\App\Models\Type::FEE_TYPE_TOTAL)->comment('水电费');
             $table->boolean('has_contract')->default(0)->comment('是否有合同期限');
             $table->boolean('has_rent_fee')->default(0)->comment('是否收取租金');
+            $table->boolean('is_using')->default(1)->comment('是否在用');
             $table->string('remark')->nullable();
             $table->timestamps();
         });

@@ -2,8 +2,9 @@
 
 namespace App\Admin\Controllers;
 
-use App\Admin\Extensions\Buttons\DeleteButton;
 use App\Admin\Extensions\Buttons\EditButton;
+use App\Admin\Extensions\Buttons\DisableButton;
+use App\Admin\Extensions\Buttons\EnableButton;
 use App\Admin\Extensions\Exporters\BillTypeExporter;
 use App\Admin\Extensions\Tools\Common\Create;
 use App\Models\BillType;
@@ -14,7 +15,7 @@ use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
-use function foo\func;
+use Illuminate\Http\Request;
 
 class BillTypeController extends Controller
 {
@@ -60,6 +61,20 @@ class BillTypeController extends Controller
         });
     }
 
+    public function disable(Request $request)
+    {
+        $type = BillType::findOrFail($request->id);
+        $type->is_using = false;
+        $type->save();
+        return 'success';
+    }
+    public function enable(Request $request)
+    {
+        $type = BillType::findOrFail($request->id);
+        $type->is_using = true;
+        $type->save();
+        return 'success';
+    }
     /**
      * Make a grid builder.
      *
@@ -77,10 +92,17 @@ class BillTypeController extends Controller
 
             $grid->actions(function ($actions) {
                 $id = $actions->getKey();
+                $row = $actions->row;
                 $actions->disableDelete();
                 $actions->disableEdit();
-                if (Admin::user()->can('bill_types.edit')) {
+                if (Admin::user()->can('bill_types.edit') && $row->is_using) {
                     $actions->append(new EditButton($id, 'bill_types.edit'));
+                }
+                if (Admin::user()->can('bill_types.disable') && $row->is_using) {
+                    $actions->append(new DisableButton($id, 'bill_types.disable'));
+                }
+                if (Admin::user()->can('bill_types.enable') && !$row->is_using) {
+                    $actions->append(new EnableButton($id, 'bill_types.enable'));
                 }
             });
 

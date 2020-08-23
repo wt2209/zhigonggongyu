@@ -92,6 +92,8 @@ Route::group([
     $router->put('bills/charge', 'BillController@charge')->name('bills.charge');
     $router->get('bills/statistics', 'BillController@statistics')->name('bills.statistics');
 
+    $router->patch('bill_types/disable', 'BillTypeController@disable')->name('bill_types.disable');
+    $router->patch('bill_types/enable', 'BillTypeController@enable')->name('bill_types.enable');
     $router->resource('bill_types', 'BillTypeController')
         ->only(['index', 'edit', 'create', 'store', 'update']);
 });
