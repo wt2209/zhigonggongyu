@@ -38,7 +38,7 @@ class LiveController extends Controller
     {
         $roomId = $request->has('room_id') ? (int)$request->input('room_id') : 0;
         $room = Room::findOrFail($roomId);
-        $types = Type::pluck('title', 'id');
+        $types = Type::where('is_using', true)->pluck('title', 'id');
         $pageTitle = '入住';
         return view('lives.create', compact('room', 'pageTitle', 'types'));
     }
@@ -108,7 +108,7 @@ class LiveController extends Controller
     public function edit($id)
     {
         $record = Record::with('person')->findOrFail($id);
-        $types = Type::pluck('title', 'id');
+        $types = Type::where('is_using', true)->pluck('title', 'id');
         $pageTitle = '入住';
         return view('lives.edit', compact('record', 'pageTitle', 'types'));
     }

@@ -2,8 +2,9 @@
 
 namespace App\Admin\Controllers;
 
-use App\Admin\Extensions\Buttons\DeleteButton;
+use App\Admin\Extensions\Buttons\DisableButton;
 use App\Admin\Extensions\Buttons\EditButton;
+use App\Admin\Extensions\Buttons\EnableButton;
 use App\Admin\Extensions\Exporters\TypeExporter;
 use App\Admin\Extensions\Tools\Common\Create;
 use App\Models\Type;
@@ -13,6 +14,7 @@ use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
+use Illuminate\Http\Request;
 
 class TypeController extends Controller
 {
@@ -45,6 +47,22 @@ class TypeController extends Controller
             $content->header('新增类型');
             $content->body($this->form());
         });
+    }
+
+    public function disable(Request $request)
+    {
+        $type = Type::findOrFail($request->id);
+        $type->is_using = false;
+        $type->save();
+        return 'success';
+    }
+
+    public function enable(Request $request)
+    {
+        $type = Type::findOrFail($request->id);
+        $type->is_using = true;
+        $type->save();
+        return 'success';
     }
 
     public function destroy($id)
@@ -99,14 +117,18 @@ class TypeController extends Controller
 
             $grid->actions(function ($actions) {
                 $id = $actions->getKey();
+                $row = $actions->row;
                 $user = Admin::user();
                 $actions->disableDelete();
                 $actions->disableEdit();
-                if ($user->can('types.edit')) {
+                if ($user->can('types.edit') && $row->is_using) {
                     $actions->append(new EditButton($id, 'types.edit'));
                 }
-                if ($user->can('types.destroy')) {
-                    $actions->append(new DeleteButton($id, 'types.destroy'));
+                if ($user->can('types.disable') && $row->is_using) {
+                    $actions->append(new DisableButton($id, 'types.disable'));
+                }
+                if ($user->can('types.enable') && !$row->is_using) {
+                    $actions->append(new EnableButton($id, 'types.enable'));
                 }
             });
 

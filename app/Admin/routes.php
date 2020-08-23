@@ -22,8 +22,10 @@ Route::group([
 
     $router->resource('records', 'RecordController')->only(['index']);
 
+    $router->patch('types/disable', 'TypeController@disable')->name('types.disable');
+    $router->patch('types/enable', 'TypeController@enable')->name('types.enable');
     $router->resource('types', 'TypeController')
-        ->only(['index', 'edit', 'create', 'store', 'update', 'destroy']);
+        ->only(['index', 'edit', 'create', 'store', 'update']);
 
     $router->get('type_histories', 'TypeHistoryController@index')
         ->name('type_histories.index');

@@ -66,14 +66,20 @@ class BillTypeController extends Controller
         $type = BillType::findOrFail($request->id);
         $type->is_using = false;
         $type->save();
-        return 'success';
+        return response()->json([
+            'status'  => true,
+            'message' => '禁用成功',
+        ]);
     }
     public function enable(Request $request)
     {
         $type = BillType::findOrFail($request->id);
         $type->is_using = true;
         $type->save();
-        return 'success';
+        return response()->json([
+            'status'  => true,
+            'message' => '启用成功',
+        ]);
     }
     /**
      * Make a grid builder.
