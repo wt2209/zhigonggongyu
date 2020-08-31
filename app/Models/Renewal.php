@@ -10,7 +10,7 @@ class Renewal extends Model
 
     public function record()
     {
-        return $this->belongsTo(Record::class);
+        return $this->belongsTo(Record::class)->withTrashed();
     }
 
     public function getCreatedAtAttribute($value)
