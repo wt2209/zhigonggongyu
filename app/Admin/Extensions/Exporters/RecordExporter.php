@@ -20,7 +20,7 @@ class RecordExporter extends ExcelExporter
 
         $roomIds = Record::withTrashed()->whereNotNull('to_room_id')->pluck('to_room_id');
         $idToRooms = Room::whereIn('id', $roomIds)->pluck('title', 'id');
-        $data[] =  ['房间号', '楼号', '单元', '类型', '姓名', '性别', '学历', '身份证号', '部门', '电话', '入住公寓时间',
+        $data[] =  ['房间号', '楼号', '单元', '类型', '姓名', '性别', '学历', '身份证号','工号', '部门', '电话', '入住公寓时间',
             '此房间入住日', '劳动合同开始日', '劳动合同结束日', '租期开始日', '租期结束日', '状态', '调房/退房日期'];
         foreach ($records as $record) {
             $data[] = [
@@ -31,7 +31,8 @@ class RecordExporter extends ExcelExporter
                 $record['person']['name'],
                 $record['person']['gender'],
                 Person::$educationMap[$record['person']['education']],
-                $record['person']['identify'] . ' ',
+                "'" . $record['person']['identify'],
+                $record['person']['serial'],
                 $record['person']['department'],
                 $record['person']['phone_number'],
                 $record['person']['entered_at'],

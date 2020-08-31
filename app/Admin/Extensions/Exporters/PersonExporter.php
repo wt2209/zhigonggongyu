@@ -14,7 +14,7 @@ class PersonExporter extends ExcelExporter
     {
         $people = $this->getData();
 
-        $data[] =  ['姓名', '性别', '身份证号', '部门', '学历', '电话',
+        $data[] =  ['姓名', '性别', '身份证号', '工号', '部门', '学历', '电话',
             '劳动合同起始日', '劳动合同结束日', '居住过的房间', '居住过的房间数', '当前状态'];
         // 在住的人的id
         $livingPersonIds = Record::where('status', 0)->pluck('person_id')->toArray();
@@ -23,7 +23,8 @@ class PersonExporter extends ExcelExporter
             $data[] = [
                 $person['name'],
                 $person['gender'],
-                $person['identify'],
+                "'" . $person['identify'],
+                $person['serial'],
                 $person['department'],
                 Person::$educationMap[$person['education']],
                 $person['phone_number'],
