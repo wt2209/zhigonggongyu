@@ -48,7 +48,6 @@ class HomeController extends Controller
     protected function setViewData()
     {
         $types = $this->getTypes();
-        $rooms = json_encode($this->getRooms());
         $currentDayBillsStatistics = $this->getCurrentDayBillsStatistics();
         $currentMonthCosts = Bill::withoutRefund()->payAtYear(date('Y'))->payAtMonth(date('m'))->sum('cost');
         // 维修
@@ -63,7 +62,6 @@ class HomeController extends Controller
         $repairing = Repair::unfinished()->get();
 
         $this->viewData = compact(
-            'rooms',
             'types',
             'currentMonthCosts',
             'currentDayBillsStatistics',
@@ -84,22 +82,6 @@ class HomeController extends Controller
             }
         ])->get();
         return $types;
-    }
-
-    protected function getRooms()
-    {
-        // 房间
-        $usedRooms = Room::has('people')->get()->groupBy('building');
-        $emptyRooms = Room::doesntHave('people')->get()->groupBy('building');
-        $buildings = Room::distinct()->pluck('building')->all();
-        // 自然排序
-        natsort($buildings);
-        $rooms['buildings'] = array_values($buildings);
-        foreach ($rooms['buildings'] as $building) {
-            $rooms['used'][] = isset($usedRooms[$building]) ? count($usedRooms[$building]) : 0;
-            $rooms['empty'][] = isset($emptyRooms[$building]) ? count($emptyRooms[$building]) : 0;
-        }
-        return $rooms;
     }
 
     protected function getCurrentDayBillsStatistics()
