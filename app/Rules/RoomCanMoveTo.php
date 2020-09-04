@@ -37,13 +37,6 @@ class RoomCanMoveTo implements Rule
             return false;
         }
 
-        $recordTypeId = $record->type_id;
-        $moveToTypeId = $moveToRoom->type_id;
-        if ($recordTypeId !== $moveToTypeId) {
-            $this->message = '房间类型不一致。请先将此人退房后，再重新入住新房间';
-            return false;
-        }
-
         return true;
     }
 
