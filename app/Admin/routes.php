@@ -60,7 +60,7 @@ Route::group([
     $router->get('repairs/{id}/edit', 'RepairController@edit')->name('repairs.edit');
     // 不使用(put)repairs/{id}格式的路由，为了避免与 (put)repairs/review等路由冲突，防止报No query results for model错误
     // 也可对id进行正则限制解决此问题
-    $router->put('repairs/{id}/update', 'RepairController@update')->name('repairs.update');
+    $router->put('repairs/{id}', 'RepairController@update')->name('repairs.update')->where(['id' => '[0-9]+']);
     $router->post('repairs', 'RepairController@store')->name('repairs.store');
     $router->get('repairs/unreviewed', 'RepairController@unreviewed')->name('repairs.unreviewed');
     $router->get('repairs/unpassed', 'RepairController@unpassed')->name('repairs.unpassed');

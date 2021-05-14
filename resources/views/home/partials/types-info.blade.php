@@ -12,6 +12,7 @@
                     </tr>
                 </thead>
                 @foreach($types as $type)
+                    @if($type->rooms_count > 0 && $type->people_count > 0)
                     <tr>
                         <td>{{$type->title}}</td>
                         <td>{{$type->rooms_count}}</td>
@@ -19,6 +20,7 @@
                         <td>{{$type->rooms_count - $type->rooms_used_count}}</td>
                         <td>{{$type->people_count}}</td>
                     </tr>
+                    @endif
                 @endforeach
                 <tr>
                     <th>总计</th>
