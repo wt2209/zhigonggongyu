@@ -326,7 +326,7 @@ class BillController extends Controller
                 $t['bill_type'] = $d[2];
                 $t['cost'] = $d[3];
                 $t['explain'] = htmlspecialchars(trim($d[4]));
-                $t['payed_at'] = strtotime($d[5]) ? Carbon::parse($d[5]) : null;
+                $t['payed_at'] = (isset($d[5]) && strtotime($d[5])) ? \Carbon\Carbon::parse($d[5]) : null;
         
                 $items[] = $t;
             }
