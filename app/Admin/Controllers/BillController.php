@@ -19,6 +19,7 @@ use Encore\Admin\Grid;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Encore\Admin\Controllers\ModelForm;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -77,9 +78,10 @@ class BillController extends Controller
     {
         $id = $request->input('id');
         $payedAt = $request->input('payed_at');
+        $chargeMode = $request->input('charge_mode');
         $ids = strpos($id, ',') !== false ? explode(',', $id) : [$id];
 
-        if ($service->charge($ids, $payedAt)) {
+        if ($service->charge($ids, $payedAt, $chargeMode)) {
             return response()->json(['status' => 1, 'message' => '缴费成功']);
         }
         return response()->json(['status' => 0, 'message' => '缴费失败']);
@@ -171,7 +173,7 @@ class BillController extends Controller
 
             $grid->model()->orderBy('id', 'desc');
 
-            $grid->column('is_refund', '缴/退费')->display(function ($value) {
+            $grid->column('is_refund', '缴/退')->display(function ($value) {
                 return $value ? '<span style="color:red">退费</span>' : '';
             });
             $grid->location('房间号/位置');
@@ -180,8 +182,13 @@ class BillController extends Controller
             $grid->cost('费用');
             $grid->explain('费用说明');
             $grid->remark('备注');
-            $grid->payed_at('缴费时间');
-            $grid->created_at('生成时间');
+            $grid->charge_mode('缴费方式');
+            $grid->payed_at('缴费时间')->display(function ($value) {
+                return substr($value, 0, 10);
+            });
+            $grid->created_at('生成时间')->display(function ($value) {
+                return substr($value, 0, 10);
+            });
 
             $grid->actions(function ($actions) {
                 $bill = $actions->row;
@@ -319,6 +326,8 @@ class BillController extends Controller
                 $t['bill_type'] = $d[2];
                 $t['cost'] = $d[3];
                 $t['explain'] = htmlspecialchars(trim($d[4]));
+                $t['payed_at'] = strtotime($d[5]) ? Carbon::parse($d[5]) : null;
+        
                 $items[] = $t;
             }
             $service = new BillService();

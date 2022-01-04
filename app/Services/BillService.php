@@ -26,7 +26,9 @@ class BillService
 
             // 在退费，或者指定“录入时缴费”时，存储的同时缴费
             if ($item['is_refund'] === true || $pay === 'on') {
-                $item['payed_at'] = $now;
+                $item['payed_at'] = $item['payed_at'] ?? $now;
+                $item['pay_user_id'] = $inputUserId;
+            } else if ($item['payed_at']) {
                 $item['pay_user_id'] = $inputUserId;
             } else {
                 $item['payed_at'] = $item['pay_user_id'] = null;
@@ -67,10 +69,11 @@ class BillService
         });
     }
 
-    public function charge($ids, $payedAt)
+    public function charge($ids, $payedAt, $chargeMode)
     {
         $data = [
             'payed_at' => strtotime($payedAt) !== false ? $payedAt : now(),
+            'charge_mode' => $chargeMode ?: '',
             'pay_user_id' => Admin::user()->id,
         ];
         return Bill::unpayed()->whereIn('id', $ids)->update($data);
@@ -117,6 +120,9 @@ class BillService
             if ($options['turn_in'] === 'false') {
                 $builder->notTurnIn();
             }
+        }
+        if (isset($options['charge_mode']) && $options['charge_mode']) {
+            $builder->where('charge_mode', $options['charge_mode']);
         }
         return $builder->get();
     }
