@@ -109,6 +109,16 @@
 
                             </div>
                         </div>
+                        <div class="form-group input-box col-md-12 col-xs-12" style="padding-left: 6px;">
+                            <label class="radio-inline charge-mode" style="margin-right: 12px;">
+                                <input type="radio" name="charge_mode" value="" @if(!request('charge_mode')) checked @endif>全部
+                            </label>
+                            @foreach(config('charge.mode') as $mode)
+                                <label class="radio-inline charge-mode" style="margin-right: 12px;">
+                                    <input type="radio" name="charge_mode" value="{{$mode}}" @if(request('charge_mode') === $mode) checked @endif>{{$mode}}
+                                </label>
+                            @endforeach
+                        </div>
                         <div class="form-group input-box col-md-12 col-xs-12">
                             <div style="padding: 6px;" class="col-md-6 col-xs-6">
                                 <label>

@@ -26,6 +26,7 @@ class CreateBillsTable extends Migration
             $table->string('remark')->nullable()->comment('备注');
             $table->integer('input_user_id')->nullable()->comment('录入人');
             $table->timestamp('payed_at')->index()->nullable()->comment('缴费时间');
+            $table->string('charge_mode')->nullable()->comment('缴费方式');
             $table->integer('pay_user_id')->nullable()->comment('缴费操作人');
             $table->timestamps();
         });

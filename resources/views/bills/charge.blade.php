@@ -48,7 +48,7 @@
     @if (count($groupedBills) > 0)
         <div class="row">
             @foreach ($groupedBills as $location => $groupedBill)
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="box box-success">
                         <div class="box-header with-border">
                             <h3 class="box-title">{{ $location }}</h3>
@@ -74,7 +74,14 @@
                                                 缴费
                                             </button>
                                             <div class="input-group input-group-sm pull-right">
-                                                <input type="text" style="width:77px;" class="form-control payed_at" placeholder="缴费时间">
+                                                <input type="text" style="width:100px;" class="form-control payed_at" placeholder="缴费时间">
+                                            </div>
+                                            <div class="input-group input-group-sm pull-right" style="padding-top: 4px;">
+                                                @foreach(config('charge.mode') as $mode)
+                                                    <label class="radio-inline charge-mode" style="margin-right: 12px;">
+                                                        <input type="radio" name="{{ $bill->id . 'mode'}}" value="{{$mode}}">{{$mode}}
+                                                    </label>
+                                                @endforeach
                                             </div>
                                         </td>
                                     </tr>
@@ -94,7 +101,14 @@
                                     全部缴费
                                 </button>
                                 <div class="input-group input-group-sm pull-right">
-                                    <input type="text" style="width:77px;" class="form-control payed_at" placeholder="缴费时间">
+                                    <input type="text" style="width:100px;" class="form-control payed_at" placeholder="缴费时间">
+                                </div>
+                                <div class="input-group input-group-sm pull-right" style="padding-top: 4px;">
+                                    @foreach(config('charge.mode') as $mode)
+                                        <label class="radio-inline charge-mode" style="margin-right: 12px;">
+                                            <input type="radio" name="{{ $bill->id . 'mode'}}" value="{{$mode}}">{{$mode}}
+                                        </label>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
@@ -119,7 +133,8 @@
 
             $('.charge-button').unbind('click').click(function() {
                 let id = $(this).data('id');
-                let payed_at = $(this).siblings('.input-group').find('input').val();
+                let payed_at = $(this).siblings('.input-group').find('input[type=text]').val();
+                let charge_mode = $(this).siblings('.input-group').find('input[type=radio]:checked').val();
 
                 swal({
                         title: "确认缴费？",
@@ -137,6 +152,7 @@
                             data: {
                                 _method: 'PUT',
                                 payed_at: payed_at,
+                                charge_mode: charge_mode,
                                 id: id,
                                 _token:LA.token
                             },
