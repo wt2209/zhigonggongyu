@@ -16,8 +16,6 @@ class RepairPrintButton
 
     public function script()
     {
-        $time = date('Y-m-d H:i:s');
-
         return <<<SCRIPT
             $('.grid-row-print').unbind('click').click(function() {
                 var id = $(this).data('id');
@@ -28,60 +26,46 @@ class RepairPrintButton
                 let created = $(this).data('created');
                 let remark = $(this).data('remark');
                 let url = $(this).data('url');
+                let reviewed = $(this).data('reviewed');
 
                 let div = document.createElement('div');
                 
                 let table = document.createElement('table');
                 $(table).addClass('table').addClass('table-print');
-                let titleTr = document.createElement('tr');
-                let title = ['报修人', '地点', '报修内容', '报修时间', '电话', '审核意见'];
-                for (i = 0; i < title.length; i++) {
-                    let th = document.createElement('th');
-                    $(th).html(title[i]);
-                    titleTr.appendChild(th);
-                }
+ 
+                let tr1 = document.createElement('tr');
+                $(tr1).html('<th width="100">房间/地点</th><td>' + location + '</td><th width="100">报修人</th><td width="100">' + name + '</td><th width="100">联系电话</th><td width="120">' + phone + '</td>')
                 
-                let contentTr = document.createElement('tr');
-                
-                let nameTd = document.createElement('td');
-                $(nameTd).html(name);
-                contentTr.appendChild(nameTd);
-                
-                let locationTd = document.createElement('td');
-                $(locationTd).html(location);
-                contentTr.appendChild(locationTd);
-                
-                let contentTd = document.createElement('td');
-                $(contentTd).html(content);
-                contentTr.appendChild(contentTd);
-                
-                let createTd = document.createElement('td');
-                $(createTd).html(created);
-                contentTr.appendChild(createTd);
-                
-                let phoneTd = document.createElement('td');
-                $(phoneTd).html(phone);
-                contentTr.appendChild(phoneTd);
-                
-                let remarkTd = document.createElement('td');
-                $(remarkTd).html(remark);
-                contentTr.appendChild(remarkTd);
-                
-                table.appendChild(titleTr);
-                table.appendChild(contentTr);
+                let tr2 = document.createElement('tr');
+                $(tr2).html('<th>报修内容</th><td colspan="3">' + content + '</td><th>预约时间</th><td></td>')
+
+                let tr3 = document.createElement('tr');
+                $(tr3).html('<th>审核人</th><td colspan="3">管理室</td><th>审核时间</th><td style="padding-left:3px;padding-right:3px;">' + reviewed + '</td>')
+
+                let tr4 = document.createElement('tr');
+                $(tr4).html('<th>维修内容</th><td colspan="5"></td>')
+
+                let tr5 = document.createElement('tr');
+                $(tr5).html('<th>使用材料</th><td colspan="5"></td>')
+
+                let tr6 = document.createElement('tr');
+                $(tr6).html('<th>维修人员</th><td></td><th>完工时间</th><td></td><th>完工签字</th><td></td>')
+
+                table.appendChild(tr1);
+                table.appendChild(tr2);
+                table.appendChild(tr3);
+                table.appendChild(tr4);
+                table.appendChild(tr5);
+                table.appendChild(tr6);
                 
                 let prepend = document.createElement('p');
                 $(prepend).addClass('print-title');
-                $(prepend).html('维修申请单');
+                $(prepend).html('设施、设备报修单');
                 
-                let append = document.createElement('div');
-                $(append).addClass('pull-right').addClass('print-append');
-                $(append).html('打印时间：{$time}<br><br>维修完工验收：');
-                
+
                 div.appendChild(prepend);
                 div.appendChild(table);
-                div.appendChild(append);
-                
+               
                 $(div).print();
             
             
@@ -106,6 +90,7 @@ SCRIPT;
         $repair = Repair::findOrFail($this->id);
         $url = route('repairs.print', ['id' => $this->id]);
 
+        $reviewed_at = substr($repair->reviewed_at, 0, 10);
         return <<<HTML
             <button data-id="{$this->id}" 
                 data-name="{$repair->name}" 
@@ -113,7 +98,8 @@ SCRIPT;
                 data-content="{$repair->content}"
                 data-created="{$repair->created_at}"
                 data-phone="{$repair->phone_number}"
-                data-remark="{$repair->review_remark}" 
+                data-remark="{$repair->review_remark}"
+                data-reviewed="{$reviewed_at}" 
                 data-url="{$url}"
                 style="margin-right: 4px;"
                 class="grid-row-print btn btn-xs btn-success" >

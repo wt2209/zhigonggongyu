@@ -89,6 +89,11 @@ class LiveController extends Controller
     {
         $pageTitle = '续签';
         $record = Record::findOrFail($id);
+        $endAt = $record->end_at;
+        $oldYear = substr($endAt, 0, 4);
+        $newYear = $oldYear + 1;
+        $record->new_end_at = $newYear . substr($endAt, 4, 6);
+     
         return view('lives.prolong', compact('record', 'pageTitle'));
     }
 

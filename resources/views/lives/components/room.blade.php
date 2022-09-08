@@ -2,8 +2,15 @@
     <div class="panel panel-default">
         <div class="panel-heading" style="overflow: hidden">
             <h3 class="panel-title col-md-5 room-title ">
-                {{$room->title}}
+                {{$room->title}} 
                 <span style="font-size: 12px;">({{$room->type->title}})</span>
+                @if ($room->unpayed) 
+                  <a target="_blank" 
+                     href="{{route('bills.index', ['location'=>$room->title, '495dc4886075acfb17bfde981a9f5b94'=>'no'])}}" 
+                     class="label label-danger"
+                     style="font-size: 10px;"
+                  >有未缴费用</a> 
+                @endif
             </h3>
             <div class="room-remark col-md-7">
                 <span style="display: block;width:100%;min-height: 24px;" ondblclick="showEditInput(this)">{{$room->remark}}</span>

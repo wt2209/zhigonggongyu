@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Bill;
 use App\Models\Person;
 use App\Models\Record;
 use App\Models\Renewal;
@@ -41,6 +42,20 @@ class LiveService
             $rooms = $this->getRoomsByDate($dateTypeId, $status, $start, $end);
         } else {
             $rooms = collect([]);
+        }
+
+        // 查找房间是否有未缴费的情况
+        $titles = [];
+        foreach ($rooms as $room) {
+            $titles[] = $room->title;
+        }
+        $unpayed = Bill::unpayed()->whereIn('location', $titles)->pluck('location')->unique()->toArray();
+        foreach ($rooms as $room) {
+            if (in_array($room->title, $unpayed)) {
+                $room->unpayed = true;
+            } else {
+                $room->unpayed = false;
+            }
         }
         return $rooms;
     }

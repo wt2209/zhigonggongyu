@@ -79,7 +79,7 @@
                         <div class="input-group">
                             <input style="width: 200px" type="text" id="person_contract_end"
                                    name="new_contract_end"
-                                   value="{{old('new_contract_end')}}"
+                                   value="{{$record->person->contract_end === '无固定期' ? \App\Models\Person::CONTRACT_RETIRE_END : $record->person->contract_end}}"
                                    class="form-control"
                                    placeholder="格式：2018-9-4"
                                    @if(old('new_contract_end') === \App\Models\Person::CONTRACT_RETIRE_END)
@@ -117,7 +117,7 @@
                             @endforeach
                         @endif
                         <div class="input-group">
-                            <input style="width: 200px" type="text"  name="new_end_at" value="{{old('new_end_at')}}" class="form-control" placeholder="格式：2018-9-4">
+                            <input style="width: 200px" type="text"  name="new_end_at" value="{{old('new_end_at') ? old('new_end_at') : $record->new_end_at}}" class="form-control" placeholder="格式：2018-9-4">
                         </div>
                     </div>
                 </div>
